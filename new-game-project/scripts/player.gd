@@ -10,7 +10,6 @@ var default_direction := movement_direction.nun
 
 func _physics_process(delta: float) -> void:
 	character_direction = Input.get_vector("move_left_td", "move_right_td", "move_up_td", "move_down_td")
-	print(character_direction)
 	if character_direction.x > 0: default_direction = movement_direction.right
 	elif character_direction.x < 0: default_direction= movement_direction.left
 	
