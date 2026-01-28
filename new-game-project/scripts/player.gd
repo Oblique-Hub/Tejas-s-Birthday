@@ -2,15 +2,18 @@ extends CharacterBody2D
 
 class_name player
 
-@export var movement_speed : float = 130.0
-var character_direction : Vector2
 @onready var sprite: AnimatedSprite2D = %sprite
+
+@export var movement_speed : float = 130.0
+
+var character_direction : Vector2
 
 enum movement_direction {up, down, left, right, nun}
 var default_direction := movement_direction.nun
 
 func encode_direction() -> void:
 	character_direction = Input.get_vector("move_left_td", "move_right_td", "move_up_td", "move_down_td", 0.2)
+		
 	if character_direction.x > 0: default_direction = movement_direction.right
 	elif character_direction.x < 0: default_direction= movement_direction.left
 	

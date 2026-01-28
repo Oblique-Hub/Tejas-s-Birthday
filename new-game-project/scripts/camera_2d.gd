@@ -1,4 +1,7 @@
 extends Camera2D
+
+class_name camera2D
+
 @export var player: CharacterBody2D
 
 @export var look_ahead_distance := 12.0

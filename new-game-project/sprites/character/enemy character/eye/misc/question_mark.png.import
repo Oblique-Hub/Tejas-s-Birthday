@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cho82iun67t5x"
-path="res://.godot/imported/SpriteSheet.png-43349190d085d3d58ffaa8a874e46b9c.ctex"
+uid="uid://bwprjgawimork"
+path="res://.godot/imported/question_mark.png-d7abe24029865c13219a1d0f5d918488.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/character/enemy character/eye/SpriteSheet.png"
-dest_files=["res://.godot/imported/SpriteSheet.png-43349190d085d3d58ffaa8a874e46b9c.ctex"]
+source_file="res://sprites/character/enemy character/eye/misc/question_mark.png"
+dest_files=["res://.godot/imported/question_mark.png-d7abe24029865c13219a1d0f5d918488.ctex"]
 
 [params]
 

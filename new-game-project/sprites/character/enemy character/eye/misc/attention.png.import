@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5nwv0r4upwhm"
-path="res://.godot/imported/Sprite-0001.png-b90e2ae8672763c09e431e392e2af378.ctex"
+uid="uid://dlivtndka6omi"
+path="res://.godot/imported/attention.png-25e7baa6b893634ac428ba66516bbdfb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/character/enemy character/eye/Sprite-0001.png"
-dest_files=["res://.godot/imported/Sprite-0001.png-b90e2ae8672763c09e431e392e2af378.ctex"]
+source_file="res://sprites/character/enemy character/eye/misc/attention.png"
+dest_files=["res://.godot/imported/attention.png-25e7baa6b893634ac428ba66516bbdfb.ctex"]
 
 [params]
 
