@@ -3,14 +3,23 @@ extends CharacterBody2D
 class_name player
 
 @onready var sprite: AnimatedSprite2D = %sprite
-
 @export var movement_speed : float = 130.0
 @export var knockback_force : float
+@onready var camera_2d: camera2D = %Camera2D
+
+signal hit_stop
 
 var get_enemy_velocity : Vector2
 
+var pending_knockback : bool = false
+var pending_enemy_velocity : Vector2 = Vector2.ZERO
+
 var player_direction : Vector2
 var knockback_direction : Vector2
+
+var in_knockback : bool= false
+var knockback_time : float= 0.15
+var knockback_timer : float= 0.0
 
 enum movement_direction {UP, DOWN, LEFT, RIGHT, NON}
 
@@ -33,18 +42,18 @@ func velocity_calculator() -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, movement_speed-100.0)
 		
+func knockback(enemy_position: Vector2) -> void:
+	in_knockback = true
+	knockback_timer = knockback_time
+	knockback_direction = (global_position - enemy_position).normalized()
+	velocity = knockback_direction * knockback_force
+		
 func _on_eye_touched(enemy_velocity) -> void:
+	camera_2d.screen_shake(4, 0.25)
+	velocity = Vector2.ZERO
+	await HitStopManager.hit_stop()
 	knockback(enemy_velocity)
-	
-func knockback(enemy_velocity) -> void:
-	knockback_direction = (enemy_velocity - velocity).normalized() * knockback_force
-	velocity = knockback_direction
-	print_debug(velocity)
-	print_debug(position)
-	move_and_slide()
-	print_debug(velocity)
-	print_debug(position)
-	
+
 func animation_handler_player() -> void:
 	if player_direction != Vector2.ZERO:
 		if default_direction == movement_direction.UP:
@@ -64,8 +73,17 @@ func animation_handler_player() -> void:
 			if sprite.animation != "idle_right": sprite.animation = "idle_right"
 		elif default_direction == movement_direction.LEFT:
 			if sprite.animation != "idle_left": sprite.animation = "idle_left"
+			
+func _ready() -> void:
+	pass
 
 func _physics_process(delta: float) -> void:
+	if (in_knockback):
+		knockback_timer -= delta
+		move_and_slide()
+		if (knockback_timer <= 0):
+			in_knockback = false
+		return
 	encode_direction()
 	velocity_calculator()
 	animation_handler_player()

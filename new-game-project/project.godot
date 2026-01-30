@@ -15,6 +15,10 @@ run/main_scene="uid://c20ehly03xr1s"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+HitStopManager="*res://scripts/hit_stop_manager.gd"
+
 [input]
 
 move_left_td={

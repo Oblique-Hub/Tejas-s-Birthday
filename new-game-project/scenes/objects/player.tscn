@@ -192,6 +192,7 @@ animations = [{
 size = Vector2(13, 15)
 
 [node name="player" type="CharacterBody2D"]
+process_mode = 3
 script = ExtResource("1_2147m")
 knockback_force = 500.0
 
@@ -203,8 +204,9 @@ texture = ExtResource("2_54rde")
 unique_name_in_owner = true
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_3v2ag")
-animation = &"walk_down"
+animation = &"idle_down"
 autoplay = "idle_down"
+frame_progress = 0.3378988
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -7.5)
@@ -215,3 +217,5 @@ unique_name_in_owner = true
 zoom = Vector2(2, 2)
 script = ExtResource("3_h5uus")
 player = NodePath("..")
+
+[connection signal="hit_stop" from="." to="Camera2D" method="_on_player_hit_stop"]

@@ -185,8 +185,8 @@ func _on_enemy_detection_body_exited(body: Node2D) -> void:
 	
 func _on_touching_detection_body_entered(body: Node2D) -> void:
 	if (body.name == "player"):
-		print("colliding")
-		emit_signal("touched", velocity)
+		await HitStopManager.hit_stop()
+		emit_signal("touched", global_position)
 
 func velocity_match() -> void:
 	velocity = character_direction * movement_speed
