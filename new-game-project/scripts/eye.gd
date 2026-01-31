@@ -227,6 +227,8 @@ func _ready():
 	initializer()
 	
 func _physics_process(delta: float) -> void:
+	if (Engine.time_scale == 0):
+		return
 	live_global_position = global_position
 	enum_matching(delta)
 	velocity_match()

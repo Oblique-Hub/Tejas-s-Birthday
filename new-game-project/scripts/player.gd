@@ -11,9 +11,6 @@ signal hit_stop
 
 var get_enemy_velocity : Vector2
 
-var pending_knockback : bool = false
-var pending_enemy_velocity : Vector2 = Vector2.ZERO
-
 var player_direction : Vector2
 var knockback_direction : Vector2
 
@@ -45,14 +42,19 @@ func velocity_calculator() -> void:
 func knockback(enemy_position: Vector2) -> void:
 	in_knockback = true
 	knockback_timer = knockback_time
-	knockback_direction = (global_position - enemy_position).normalized()
+	var dir : Vector2 = global_position - enemy_position
+	if (dir.is_zero_approx()):
+		if (not player_direction.is_zero_approx()):
+			dir -= player_direction
+		if (dir.is_zero_approx()):
+			dir = Vector2.UP
+	knockback_direction = dir.normalized()
 	velocity = knockback_direction * knockback_force
 		
-func _on_eye_touched(enemy_velocity) -> void:
+func _on_eye_touched(enemy_position) -> void:
 	camera_2d.screen_shake(4, 0.25)
-	velocity = Vector2.ZERO
+	knockback(enemy_position)
 	await HitStopManager.hit_stop()
-	knockback(enemy_velocity)
 
 func animation_handler_player() -> void:
 	if player_direction != Vector2.ZERO:
@@ -78,6 +80,8 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+	if (Engine.time_scale == 0):
+		return
 	if (in_knockback):
 		knockback_timer -= delta
 		move_and_slide()
