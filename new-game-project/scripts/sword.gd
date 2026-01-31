@@ -6,6 +6,8 @@ signal enemy_hit
 signal sword_direction
 signal not_enemy_hit
 
+var targets : Array[enemy_eye] = []
+
 var mouse_position
 var can_hit : bool = false
 var allowed_to_hit : bool = false
@@ -23,12 +25,16 @@ func facing() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if (body is enemy_eye):
-		print("enemy is detected")
-		can_hit = true
+		if not targets.has(body):
+			targets.append(body)
+		print("Enemy added to target list. Count: ", targets.size())
 		
 func attacking() -> void:
-	if (can_hit == true):
+	if (targets.size() > 0):
 		if Input.is_action_just_pressed("attack"):
+			for enemy in targets:
+				if (is_instance_valid(enemy)):
+					enemy._on_player_hitting_enemy(sword_direction_vector)
 			emit_signal("enemy_hit")
 
 func _on_player_attack_entered() -> void:
@@ -40,8 +46,9 @@ func _on_player_attack_exited() -> void:
 	allowed_to_hit = false
 	
 func _on_body_exited(body: Node2D) -> void:
-	can_hit = false
-	emit_signal("not_enemy_hit")
+	if (body is enemy_eye):
+		targets.erase(body)
+		print("Enemy removed. Remaining: ", targets.size())
 	
 func _ready() -> void:
 	sword_sprite.visible = false

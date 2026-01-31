@@ -20,7 +20,17 @@ texture = ExtResource("1_avr7r")
 [node name="eye" parent="." instance=ExtResource("2_avr7r")]
 position = Vector2(157, -50)
 
+[node name="eye2" parent="." instance=ExtResource("2_avr7r")]
+position = Vector2(-207, 236)
+
+[node name="eye3" parent="." instance=ExtResource("2_avr7r")]
+position = Vector2(-262, -213)
+
 [connection signal="hitting_enemy" from="player" to="eye" method="_on_player_hitting_enemy"]
 [connection signal="not_hitting_enemy" from="player" to="eye" method="_on_player_not_hitting_enemy"]
 [connection signal="hit" from="eye" to="player" method="_on_eye_hit"]
 [connection signal="touched" from="eye" to="player" method="_on_eye_touched"]
+[connection signal="hit" from="eye2" to="player" method="_on_eye_hit"]
+[connection signal="touched" from="eye2" to="player" method="_on_eye_touched"]
+[connection signal="hit" from="eye3" to="player" method="_on_eye_hit"]
+[connection signal="touched" from="eye3" to="player" method="_on_eye_touched"]
