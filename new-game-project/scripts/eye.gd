@@ -217,6 +217,7 @@ func _on_player_hitting_enemy(got_player_direction) -> void:
 func _on_player_not_hitting_enemy() -> void:
 	got_hit = false
 
+	
 func enter_backoff() -> void:
 	if (backoff_active == true):
 		return
@@ -274,10 +275,6 @@ func initializer() -> void:
 	detection.visible = false
 	question.visible = false
 	global_position_at_start = global_position
-	var unique_id = get_tree().current_scene.scene_file_path + "/" + self.name
-	print_debug(unique_id)
-	if GameManager.dead_enemies.has(unique_id):
-		queue_free()
 
 func _ready():
 	initializer()

@@ -1,18 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://c20ehly03xr1s"]
+[gd_scene load_steps=5 format=3 uid="uid://c20ehly03xr1s"]
 
 [ext_resource type="Texture2D" uid="uid://b8kggibsnsvi6" path="res://sprites/misc/Sprite-0002.png" id="1_0ayuh"]
 [ext_resource type="Texture2D" uid="uid://dn3f6vj6u5oqm" path="res://sprites/tileset/TilesetField.png" id="1_avr7r"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://scenes/objects/player.tscn" id="1_fmj00"]
-[ext_resource type="PackedScene" uid="uid://dm31a6kvi0gn1" path="res://scenes/objects/game_manager.tscn" id="1_ftay3"]
 [ext_resource type="PackedScene" uid="uid://dw3w65ok3v27" path="res://scenes/objects/eye.tscn" id="2_avr7r"]
-[ext_resource type="PackedScene" uid="uid://bhemde8kefjm" path="res://scenes/objects/stone_walk.tscn" id="6_6yixf"]
-[ext_resource type="PackedScene" uid="uid://brje3uwjwygf3" path="res://scenes/objects/lava_walk.tscn" id="7_i3kgc"]
-[ext_resource type="PackedScene" uid="uid://mrg4rhknbmx6" path="res://scenes/objects/ice_walk.tscn" id="8_h302d"]
-[ext_resource type="PackedScene" uid="uid://craf3eix3ausx" path="res://scenes/objects/poison.tscn" id="9_maeww"]
 
 [node name="M1" type="Node2D"]
-
-[node name="game_manager" parent="." instance=ExtResource("1_ftay3")]
 
 [node name="spritesheet" type="Sprite2D" parent="."]
 position = Vector2(26, 13)
@@ -24,40 +17,10 @@ texture = ExtResource("1_avr7r")
 
 [node name="player" parent="." instance=ExtResource("1_fmj00")]
 
-[node name="sfx" type="Node" parent="."]
-
-[node name="stone_walk" parent="sfx" instance=ExtResource("6_6yixf")]
-position = Vector2(-423.00006, -0.9999943)
-scale = Vector2(10.587199, 1.8218905)
-
-[node name="lava_walk" parent="sfx" instance=ExtResource("7_i3kgc")]
-position = Vector2(-110, 651)
-scale = Vector2(2.6002326, 17.514431)
-
-[node name="ice_walk" parent="sfx" instance=ExtResource("8_h302d")]
-position = Vector2(-106, -821)
-scale = Vector2(2.6512353, 19.335354)
-
-[node name="enemy" type="Node" parent="."]
-
-[node name="poison" parent="enemy" instance=ExtResource("9_maeww")]
-position = Vector2(-126, -92)
-
-[node name="eye" parent="enemy" instance=ExtResource("2_avr7r")]
+[node name="eye" parent="." instance=ExtResource("2_avr7r")]
 position = Vector2(157, -50)
 
-[connection signal="player_not_on_ice" from="game_manager" to="player" method="_on_game_manager_player_not_on_ice"]
-[connection signal="player_not_on_lava" from="game_manager" to="player" method="_on_game_manager_player_not_on_lava"]
-[connection signal="player_not_on_stone" from="game_manager" to="player" method="_on_game_manager_player_not_on_stone"]
-[connection signal="player_on_ice" from="game_manager" to="player" method="_on_game_manager_player_on_ice"]
-[connection signal="player_on_lava" from="game_manager" to="player" method="_on_game_manager_player_on_lava"]
-[connection signal="player_on_stone" from="game_manager" to="player" method="_on_game_manager_player_on_stone"]
-[connection signal="sword_swing" from="game_manager" to="player" method="_on_game_manager_sword_swing"]
-[connection signal="hitting_enemy" from="player" to="enemy/eye" method="_on_player_hitting_enemy"]
-[connection signal="hitting_enemy" from="player" to="enemy/poison" method="_on_player_hitting_enemy"]
-[connection signal="not_hitting_enemy" from="player" to="enemy/eye" method="_on_player_not_hitting_enemy"]
-[connection signal="not_hitting_enemy" from="player" to="enemy/poison" method="_on_player_not_hitting_enemy"]
-[connection signal="hit" from="enemy/poison" to="player" method="_on_poison_hit"]
-[connection signal="touched" from="enemy/poison" to="player" method="_on_poison_touched"]
-[connection signal="hit" from="enemy/eye" to="player" method="_on_eye_hit"]
-[connection signal="touched" from="enemy/eye" to="player" method="_on_eye_touched"]
+[connection signal="hitting_enemy" from="player" to="eye" method="_on_player_hitting_enemy"]
+[connection signal="not_hitting_enemy" from="player" to="eye" method="_on_player_not_hitting_enemy"]
+[connection signal="hit" from="eye" to="player" method="_on_eye_hit"]
+[connection signal="touched" from="eye" to="player" method="_on_eye_touched"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://be8qbmt0fe144"]
+[gd_scene load_steps=30 format=3 uid="uid://be8qbmt0fe144"]
 
 [ext_resource type="Script" uid="uid://c3ubxpp10k6x6" path="res://scripts/player.gd" id="1_2147m"]
 [ext_resource type="Texture2D" uid="uid://scsbaf7gqh7f" path="res://sprites/background/shadow_2.png" id="2_54rde"]
@@ -6,13 +6,6 @@
 [ext_resource type="Script" uid="uid://co6ub37ujgp7h" path="res://scripts/camera_2d.gd" id="3_h5uus"]
 [ext_resource type="Script" uid="uid://5ywey1uj7ip4" path="res://scripts/sword.gd" id="5_ksjmp"]
 [ext_resource type="Texture2D" uid="uid://co48e7h6x0mxd" path="res://sprites/misc/sword.png" id="6_2rlf8"]
-[ext_resource type="AudioStream" uid="uid://7rb8vwn2106s" path="res://audio/stone_walk.mp3" id="7_2rlf8"]
-[ext_resource type="AudioStream" uid="uid://daj67iri3j8tp" path="res://audio/lava_walk.mp3" id="8_0ay4w"]
-[ext_resource type="AudioStream" uid="uid://dbkilre8av67x" path="res://audio/lava_ambiance.mp3" id="8_4c2uj"]
-[ext_resource type="AudioStream" uid="uid://dslxvc30174xt" path="res://audio/ice_walk.mp3" id="9_tuhu7"]
-[ext_resource type="AudioStream" uid="uid://jrjpilyk2tua" path="res://audio/sword_swing.mp3" id="10_4c2uj"]
-[ext_resource type="AudioStream" uid="uid://c1l4ssu61w2ng" path="res://audio/ice_ambiance.mp3" id="12_68atb"]
-[ext_resource type="AudioStream" uid="uid://d2olv1in84jwc" path="res://audio/stone_ambiance_v3.mp3" id="13_2lybl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_54rde"]
 atlas = ExtResource("2_h5uus")
@@ -201,7 +194,7 @@ animations = [{
 size = Vector2(13, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ksjmp"]
-size = Vector2(15, 18)
+size = Vector2(11, 36)
 
 [node name="player" type="CharacterBody2D"]
 process_mode = 3
@@ -241,30 +234,8 @@ position = Vector2(0, -23)
 texture = ExtResource("6_2rlf8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sword_pivoit/sword"]
-position = Vector2(-0.5, -23)
+position = Vector2(-0.5, -32)
 shape = SubResource("RectangleShape2D_ksjmp")
-
-[node name="sfx_stone" type="AudioStreamPlayer2D" parent="."]
-process_mode = 3
-stream = ExtResource("7_2rlf8")
-
-[node name="sfx_lava" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_4c2uj")
-
-[node name="sfx_ice" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("9_tuhu7")
-
-[node name="sword_swing" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("10_4c2uj")
-
-[node name="sfx_lava_ambiance" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_0ay4w")
-
-[node name="sfx_ice_ambiance" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("12_68atb")
-
-[node name="sfx_stone_ambiance" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("13_2lybl")
 
 [connection signal="attack_entered" from="." to="sword_pivoit/sword" method="_on_player_attack_entered"]
 [connection signal="attack_exited" from="." to="sword_pivoit/sword" method="_on_player_attack_exited"]
