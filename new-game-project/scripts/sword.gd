@@ -22,7 +22,8 @@ func facing() -> void:
 	emit_signal("sword_direction", sword_direction_vector)
 
 func _on_body_entered(body: Node2D) -> void:
-	if (body.name == "eye"):
+	if (body is enemy_eye):
+		print("enemy is detected")
 		can_hit = true
 		
 func attacking() -> void:
