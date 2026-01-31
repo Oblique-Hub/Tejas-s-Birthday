@@ -2,12 +2,24 @@ extends Node
 
 class_name game_manager
 
-@onready var eye: enemy_eye = %eye
-@onready var eye_2: enemy_eye = %eye2
-@onready var eye_3: enemy_eye = %eye3
+signal player_on_stone
+signal player_not_on_stone
+signal player_on_lava
+signal player_not_on_lava
+signal player_on_ice
+signal player_not_on_ice
+signal sword_swing
+signal enemy_dead
 
+var dead_enemies : Dictionary = {}
 
-var enemy_array : Array = [eye, eye_2, eye_3]
+func mark_enemy_dead(id: String):
+	dead_enemies[id] = true
+	emit_signal("enemy_dead")
 
 func _ready() -> void:
 	pass
+
+
+func _on_poison_hit() -> void:
+	pass # Replace with function body.
