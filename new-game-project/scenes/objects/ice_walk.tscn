@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://mrg4rhknbmx6"]
+
+[ext_resource type="Texture2D" uid="uid://chmwkgw7jjqrr" path="res://sprites/background/ice.png" id="1_jdmcb"]
+[ext_resource type="Script" uid="uid://diqdxacclmtu2" path="res://scripts/ice_walk.gd" id="1_n38y5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n38y5"]
+size = Vector2(64, 64)
+
+[node name="ice_walk" type="Area2D"]
+script = ExtResource("1_n38y5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_jdmcb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_n38y5")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
