@@ -76,6 +76,10 @@ func _on_eye_hit() -> void:
 	health -= 20
 	print("player ", health)
 	
+func _on_poison_hit(poison_position) -> void:
+	health -= 20
+	print("player ", health)
+	
 func _on_sword_enemy_hit() -> void:
 	count += 1
 	emit_signal("hitting_enemy", got_sword_direction)
@@ -86,6 +90,11 @@ func _on_sword_not_enemy_hit() -> void:
 func _on_eye_touched(enemy_position) -> void:
 	camera_2d.screen_shake(4, 0.25)
 	knockback(enemy_position)
+	await HitStopManager.hit_stop()
+	
+func _on_poison_touched(poison_position) -> void:
+	camera_2d.screen_shake(4, 0.25)
+	knockback(poison_position)
 	await HitStopManager.hit_stop()
 	
 func _on_sword_sword_direction(sword_direction) -> void:
