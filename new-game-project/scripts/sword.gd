@@ -32,6 +32,7 @@ func _on_body_entered(body: Node2D) -> void:
 func attacking() -> void:
 	if (targets.size() > 0):
 		if Input.is_action_just_pressed("attack"):
+			GameManager.emit_signal("sword_swing")
 			for enemy in targets:
 				if (is_instance_valid(enemy)):
 					enemy._on_player_hitting_enemy(sword_direction_vector)
