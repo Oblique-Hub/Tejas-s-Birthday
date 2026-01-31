@@ -9,6 +9,8 @@ signal touched
 signal hit
 
 var health : float = 100.0
+var last_health : float
+var backoff_timer : SceneTreeTimer  = null
 
 var character_direction : Vector2
 var last_direction : Vector2
@@ -16,6 +18,8 @@ var last_direction_to_player : Vector2
 var global_position_at_start : Vector2
 var live_global_position : Vector2
 var dir : Vector2
+var knockback_direction : Vector2
+var direction_enabler : Vector2
 
 var direction_array : Array = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
 var idle_walk_behaviour_array : Array = [0.05,0.15,0.25,0.5,0.75,1.0,1.25,1.5,1.75,0.05,0.15]
@@ -28,7 +32,11 @@ var finding_direction = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]
 
 var univeral_timer : float = 0
 var finding_direction_change_timer : float = 0
+var knockback_time : float
+var knockback_timer : float
+var knockback_force : float
 
+var got_count : int
 var roll : int
 var steps : int = 0
 
@@ -36,13 +44,16 @@ var target
 
 var target_found : bool = false
 var running : bool = true
+var in_knockback : bool = true
+var backoff_done : bool = false
+var backoff_active : bool = false
 
 
 @onready var sprite: AnimatedSprite2D = %sprite
 @onready var detection: Sprite2D = %detection
 @onready var question: Sprite2D = %question
 
-enum states {IDLE, WANDER, CHASE, FINDING, IDLING}
+enum states {IDLE, WANDER, CHASE, FINDING, BACKOFF}
 enum idle_states {IDLING, WALKING}
 
 var state : states = states.IDLE
@@ -166,8 +177,9 @@ func enum_matching(_delta : float) -> void:
 				wandering(_delta)
 			states.FINDING:
 				finding_player(_delta)
-			states.IDLING:
-				pause()
+			states.BACKOFF:
+				backoff()
+			
 				
 	elif (target_found == true):
 		match state:
@@ -190,11 +202,56 @@ func _on_touching_detection_body_entered(body: Node2D) -> void:
 		await HitStopManager.hit_stop()
 		emit_signal("touched", global_position)
 		emit_signal("hit")
-		
-func _on_player_hitting_enemy() -> void:
-	health -= 20.0
-	print("enemy ", health)
 
+func _on_player_hitting_enemy(got_player_count) -> void:
+	health -= 20
+	got_count = got_player_count
+	print("enemy health ", health)
+	print(got_count)
+	
+func enter_backoff() -> void:
+	if (backoff_active == true):
+		return
+	print("Backoff working")
+	backoff_active = true
+	direction_enabler = character_direction.normalized()
+	state = states.BACKOFF
+	backoff_timer = get_tree().create_timer(10)
+	backoff_timer.timeout.connect(Callable(self, "_end_backoff"))
+	
+func _end_backoff() -> void:
+	state = states.IDLE
+	backoff_timer = null
+	backoff_done = true
+	backoff_active = false
+	
+func health_check(_delta : float) -> void:
+	if (backoff_done == true or backoff_active == true):
+		return
+	elif (got_count > 1):
+		enter_backoff()
+	
+	
+func backoff() -> void:
+	if (direction_enabler.x > 0.3826 and direction_enabler.y < -0.3826):
+		character_direction = (Vector2.UP + Vector2.LEFT).normalized()
+	elif (direction_enabler.x < -0.3826 and direction_enabler.y > 0.3826):
+		character_direction = (Vector2.DOWN + Vector2.RIGHT).normalized()
+	elif (direction_enabler.x < -0.3826 and direction_enabler.y < -0.3826):
+		character_direction = (Vector2.UP + Vector2.RIGHT).normalized()
+	elif (direction_enabler.x > 0.3826 and direction_enabler.y > 0.3826):
+		character_direction = (Vector2.DOWN + Vector2.LEFT).normalized()
+	elif (abs(direction_enabler.x) > abs(direction_enabler.y)):
+		if (direction_enabler.x > 0):
+			character_direction = Vector2.LEFT
+		elif (direction_enabler.x < 0):
+			character_direction = Vector2.RIGHT
+	elif (abs(direction_enabler.y) > abs(direction_enabler.x)):
+		if (direction_enabler.y > 0):
+			character_direction = Vector2.UP
+		elif (direction_enabler.y < 0):
+			character_direction = Vector2.DOWN
+	
 func velocity_match() -> void:
 	velocity = character_direction * movement_speed
 			
@@ -237,6 +294,7 @@ func _physics_process(delta: float) -> void:
 	if (Engine.time_scale == 0):
 		return
 	live_global_position = global_position
+	health_check(delta)
 	enum_matching(delta)
 	velocity_match()
 	animation_handler()

@@ -21,8 +21,11 @@ var health : float = 100
 var knockback_time : float= 0.15
 var knockback_timer : float= 0.0
 
+var count : int = 0
+
 var in_knockback : bool= false
 var attack_pressed_bool : bool = false
+var hit : bool = true
 
 enum movement_direction {UP, DOWN, LEFT, RIGHT, NON}
 
@@ -62,7 +65,9 @@ func _on_eye_hit() -> void:
 	print("player ", health)
 	
 func _on_sword_enemy_hit() -> void:
-	emit_signal("hitting_enemy")
+	count += 1
+	emit_signal("hitting_enemy", count)
+
 		
 func _on_eye_touched(enemy_position) -> void:
 	camera_2d.screen_shake(4, 0.25)

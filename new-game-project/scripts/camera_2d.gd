@@ -41,7 +41,7 @@ func shaking(_delta : float) -> void:
 		offset = lerp(offset, Vector2.ZERO, 10.5 * _delta)
 		
 func _ready():
-	player.hit_stop.connect(_on_player_hit_stop)
+	pass
 
 func _process(delta: float) -> void:
 	shaking(delta)
