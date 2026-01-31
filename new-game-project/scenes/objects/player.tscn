@@ -1,9 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://be8qbmt0fe144"]
+[gd_scene load_steps=30 format=3 uid="uid://be8qbmt0fe144"]
 
 [ext_resource type="Script" uid="uid://c3ubxpp10k6x6" path="res://scripts/player.gd" id="1_2147m"]
 [ext_resource type="Texture2D" uid="uid://scsbaf7gqh7f" path="res://sprites/background/shadow_2.png" id="2_54rde"]
 [ext_resource type="Texture2D" uid="uid://dtkbq2dle2vfa" path="res://sprites/player character/SpriteSheet.png" id="2_h5uus"]
 [ext_resource type="Script" uid="uid://co6ub37ujgp7h" path="res://scripts/camera_2d.gd" id="3_h5uus"]
+[ext_resource type="Script" uid="uid://5ywey1uj7ip4" path="res://scripts/sword.gd" id="5_ksjmp"]
+[ext_resource type="Texture2D" uid="uid://co48e7h6x0mxd" path="res://sprites/misc/sword.png" id="6_2rlf8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_54rde"]
 atlas = ExtResource("2_h5uus")
@@ -191,8 +193,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jej6c"]
 size = Vector2(13, 15)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksjmp"]
+size = Vector2(11, 36)
+
 [node name="player" type="CharacterBody2D"]
+process_mode = 3
 script = ExtResource("1_2147m")
+knockback_force = 500.0
 
 [node name="shadow" type="Sprite2D" parent="."]
 position = Vector2(-1, -9)
@@ -204,6 +211,7 @@ position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_3v2ag")
 animation = &"idle_down"
 autoplay = "idle_down"
+frame_progress = 0.2770654
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -7.5)
@@ -214,3 +222,26 @@ unique_name_in_owner = true
 zoom = Vector2(2, 2)
 script = ExtResource("3_h5uus")
 player = NodePath("..")
+
+[node name="sword_pivoit" type="Node2D" parent="."]
+
+[node name="sword" type="Area2D" parent="sword_pivoit"]
+script = ExtResource("5_ksjmp")
+
+[node name="sword_sprite" type="Sprite2D" parent="sword_pivoit/sword"]
+unique_name_in_owner = true
+position = Vector2(0, -23)
+texture = ExtResource("6_2rlf8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sword_pivoit/sword"]
+position = Vector2(-0.5, -32)
+shape = SubResource("RectangleShape2D_ksjmp")
+
+[connection signal="attack_entered" from="." to="sword_pivoit/sword" method="_on_player_attack_entered"]
+[connection signal="attack_exited" from="." to="sword_pivoit/sword" method="_on_player_attack_exited"]
+[connection signal="hit_stop" from="." to="Camera2D" method="_on_player_hit_stop"]
+[connection signal="body_entered" from="sword_pivoit/sword" to="sword_pivoit/sword" method="_on_body_entered"]
+[connection signal="body_exited" from="sword_pivoit/sword" to="sword_pivoit/sword" method="_on_body_exited"]
+[connection signal="enemy_hit" from="sword_pivoit/sword" to="." method="_on_sword_enemy_hit"]
+[connection signal="not_enemy_hit" from="sword_pivoit/sword" to="." method="_on_sword_not_enemy_hit"]
+[connection signal="sword_direction" from="sword_pivoit/sword" to="." method="_on_sword_sword_direction"]
