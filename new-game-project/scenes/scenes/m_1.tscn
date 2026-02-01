@@ -46,6 +46,9 @@ position = Vector2(-126, -92)
 [node name="eye" parent="enemy" instance=ExtResource("2_avr7r")]
 position = Vector2(157, -50)
 
+[node name="poison" parent="." instance=ExtResource("9_maeww")]
+position = Vector2(-374, -300)
+
 [connection signal="player_not_on_ice" from="game_manager" to="player" method="_on_game_manager_player_not_on_ice"]
 [connection signal="player_not_on_lava" from="game_manager" to="player" method="_on_game_manager_player_not_on_lava"]
 [connection signal="player_not_on_stone" from="game_manager" to="player" method="_on_game_manager_player_not_on_stone"]
@@ -53,10 +56,10 @@ position = Vector2(157, -50)
 [connection signal="player_on_lava" from="game_manager" to="player" method="_on_game_manager_player_on_lava"]
 [connection signal="player_on_stone" from="game_manager" to="player" method="_on_game_manager_player_on_stone"]
 [connection signal="sword_swing" from="game_manager" to="player" method="_on_game_manager_sword_swing"]
-[connection signal="hitting_enemy" from="player" to="enemy/eye" method="_on_player_hitting_enemy"]
 [connection signal="hitting_enemy" from="player" to="enemy/poison" method="_on_player_hitting_enemy"]
-[connection signal="not_hitting_enemy" from="player" to="enemy/eye" method="_on_player_not_hitting_enemy"]
+[connection signal="hitting_enemy" from="player" to="enemy/eye" method="_on_player_hitting_enemy"]
 [connection signal="not_hitting_enemy" from="player" to="enemy/poison" method="_on_player_not_hitting_enemy"]
+[connection signal="not_hitting_enemy" from="player" to="enemy/eye" method="_on_player_not_hitting_enemy"]
 [connection signal="hit" from="enemy/poison" to="player" method="_on_poison_hit"]
 [connection signal="touched" from="enemy/poison" to="player" method="_on_poison_touched"]
 [connection signal="hit" from="enemy/eye" to="player" method="_on_eye_hit"]
