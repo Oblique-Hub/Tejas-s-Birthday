@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://deudgvpiqhu45"]
+[gd_scene load_steps=8 format=3 uid="uid://deudgvpiqhu45"]
 
 [ext_resource type="Texture2D" uid="uid://cp6476hcon25b" path="res://tile_sprite_sheets/my tileset poison.png" id="1_rk6s8"]
+[ext_resource type="PackedScene" uid="uid://bhemde8kefjm" path="res://scenes/objects/stone_walk.tscn" id="1_x4il8"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://scenes/objects/player.tscn" id="2_e6v6q"]
 [ext_resource type="PackedScene" uid="uid://dm31a6kvi0gn1" path="res://scenes/objects/game_manager.tscn" id="4_rm7ig"]
-[ext_resource type="PackedScene" uid="uid://ejmern27hiht" path="res://scenes/objects/poison_enemy.tscn" id="4_x4il8"]
+[ext_resource type="PackedScene" uid="uid://craf3eix3ausx" path="res://scenes/objects/poison.tscn" id="5_x4il8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y6fbn"]
 texture = ExtResource("1_rk6s8")
@@ -221,6 +222,10 @@ sources/0 = SubResource("TileSetAtlasSource_y6fbn")
 
 [node name="poison" type="Node2D"]
 
+[node name="stone_walk" parent="." instance=ExtResource("1_x4il8")]
+position = Vector2(-10, -31)
+scale = Vector2(22.691488, 11.539006)
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_o2d3i")
 format = 2
@@ -233,7 +238,8 @@ position = Vector2(-281, -34)
 
 [node name="enemy" type="Node" parent="."]
 
-[node name="eye" parent="enemy" instance=ExtResource("4_x4il8")]
+[node name="poison" parent="." instance=ExtResource("5_x4il8")]
+position = Vector2(-103, -44)
 
 [connection signal="player_not_on_ice" from="game_manager" to="player" method="_on_game_manager_player_not_on_ice"]
 [connection signal="player_not_on_lava" from="game_manager" to="player" method="_on_game_manager_player_not_on_lava"]

@@ -48,6 +48,7 @@ position = Vector2(100, 437)
 position = Vector2(-266, -105)
 movement_speed = 130.0
 
+[connection signal="death_of_player" from="game_manager" to="player" method="_on_game_manager_death_of_player"]
 [connection signal="health_regen" from="game_manager" to="player" method="_on_game_manager_health_regen"]
 [connection signal="player_not_on_ice" from="game_manager" to="player" method="_on_game_manager_player_not_on_ice"]
 [connection signal="player_not_on_lava" from="game_manager" to="player" method="_on_game_manager_player_not_on_lava"]

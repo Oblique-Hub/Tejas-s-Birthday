@@ -122,6 +122,7 @@ func initilizer() -> void:
 	GameManager.player_not_on_ice.connect(_on_game_manager_player_not_on_ice)
 	GameManager.sword_swing.connect(_on_game_manager_sword_swing)
 	GameManager.health_regen.connect(_on_game_manager_health_regen)
+	GameManager.death_of_player.connect(_on_game_manager_death_of_player)
 			
 func _on_game_manager_player_on_stone() -> void:
 	if (not sfx_stone_ambiance.playing):
@@ -175,6 +176,15 @@ func audio_handler() -> void:
 func _on_game_manager_sword_swing() -> void:
 	if (not sword_swing.playing):
 		sword_swing.play()
+		
+func death() -> void:
+	if (GameManager.health == 0):
+		queue_free()
+		get_tree().reload_current_scene()
+		
+func _on_game_manager_death_of_player() -> void:
+	death()
+
 	
 func poison_damage(_delta : float) -> void:
 	if poison_duration > 0:
@@ -182,7 +192,7 @@ func poison_damage(_delta : float) -> void:
 		GameManager.damage(5 * _delta)
 		sprite.modulate = Color(0.7, 1.0, 0.7) 
 	else:
-		sprite.modulate = Color(1, 1, 1) # Back to normal 
+		sprite.modulate = Color(1, 1, 1)
 	
 func animation_handler_player() -> void:
 	if player_direction != Vector2.ZERO:
@@ -203,6 +213,7 @@ func animation_handler_player() -> void:
 			if sprite.animation != "idle_right": sprite.animation = "idle_right"
 		elif default_direction == movement_direction.LEFT:
 			if sprite.animation != "idle_left": sprite.animation = "idle_left"
+
 			
 func _ready() -> void:
 	initilizer()
@@ -223,7 +234,3 @@ func _physics_process(delta: float) -> void:
 	audio_handler()
 	animation_handler_player()
 	move_and_slide()
-
-
-func _on_animated_sprite_2d_animation_finished() -> void:
-	pass # Replace with function body.
