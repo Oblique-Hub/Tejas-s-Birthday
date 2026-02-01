@@ -1,0 +1,133 @@
+[gd_scene load_steps=13 format=3 uid="uid://ciu8l2khxixc1"]
+
+[ext_resource type="Texture2D" uid="uid://dd0bo8xatfvar" path="res://sprites/misc/enemy health bar.png" id="1_2i7yw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwr74"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 150, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruijd"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 135, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hbgv"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 120, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d7dci"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 105, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06wdg"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 90, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7xly"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 75, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yi4ht"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 60, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljd3k"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 45, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5cpp"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 30, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_volcp"]
+atlas = ExtResource("1_2i7yw")
+region = Rect2(0, 15, 48, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3hijr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwr74")
+}],
+"loop": true,
+"name": &"0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruijd")
+}],
+"loop": true,
+"name": &"10",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hbgv")
+}],
+"loop": true,
+"name": &"20",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d7dci")
+}],
+"loop": true,
+"name": &"30",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06wdg")
+}],
+"loop": true,
+"name": &"40",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j7xly")
+}],
+"loop": true,
+"name": &"50",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yi4ht")
+}],
+"loop": true,
+"name": &"60",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljd3k")
+}],
+"loop": true,
+"name": &"70",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5cpp")
+}],
+"loop": true,
+"name": &"80",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_volcp")
+}],
+"loop": true,
+"name": &"90",
+"speed": 5.0
+}]
+
+[node name="health" type="Area2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(9, 0)
+sprite_frames = SubResource("SpriteFrames_3hijr")
+animation = &"90"

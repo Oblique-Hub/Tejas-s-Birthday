@@ -1,6 +1,12 @@
 extends enemy_eye
 
-func _ready():
-	var connections = get_signal_connection_list("touched")
-	for connection in connections:	
-		print("Signal 'touched' is connected to: ", connection.callable.get_object())
+var player_ref: CharacterBody2D = null
+
+func _on_poison_detection_body_entered(body: Node2D) -> void:
+	if body.name == "player":
+		body.poison_duration = 3.0
+
+func _on_poison_detection_body_stay(body: Node2D) -> void:
+	if body.name == "player":
+		body.poison_duration = 3.0
+		

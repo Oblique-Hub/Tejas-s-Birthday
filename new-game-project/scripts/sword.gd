@@ -14,7 +14,7 @@ var allowed_to_hit : bool = false
 
 var sword_direction_vector
 
-@onready var sword_sprite: Sprite2D = %sword_sprite
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func facing() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -33,17 +33,18 @@ func attacking() -> void:
 	if (targets.size() > 0):
 		if Input.is_action_just_pressed("attack"):
 			GameManager.emit_signal("sword_swing")
+			animated_sprite_2d.play("swing")
 			for enemy in targets:
 				if (is_instance_valid(enemy)):
 					enemy._on_player_hitting_enemy(sword_direction_vector)
 			emit_signal("enemy_hit")
-
+			
 func _on_player_attack_entered() -> void:
-	sword_sprite.visible = true
+	animated_sprite_2d.visible = true
 	allowed_to_hit = true
 	
 func _on_player_attack_exited() -> void:
-	sword_sprite.visible = false
+	animated_sprite_2d.visible = false
 	allowed_to_hit = false
 	
 func _on_body_exited(body: Node2D) -> void:
@@ -52,7 +53,7 @@ func _on_body_exited(body: Node2D) -> void:
 		print("Enemy removed. Remaining: ", targets.size())
 	
 func _ready() -> void:
-	sword_sprite.visible = false
+	animated_sprite_2d.visible = false
 
 func _process(delta: float) -> void:
 	if (allowed_to_hit):

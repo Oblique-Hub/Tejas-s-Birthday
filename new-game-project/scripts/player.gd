@@ -26,9 +26,10 @@ var player_direction : Vector2
 var knockback_direction : Vector2
 var got_sword_direction : Vector2
 
-var health : float = 100
+var poison_duration : float = 0.0
 var knockback_time : float= 0.15
 var knockback_timer : float= 0.0
+var universal_timer : float = 0.0
 
 var count : int = 0
 
@@ -38,6 +39,8 @@ var hit : bool = true
 var is_on_ice : bool = false
 var is_on_lava : bool = false
 var is_on_stone : bool = false
+var poison_sources : int = 0
+var is_invulnerable : bool = false
 
 enum movement_direction {UP, DOWN, LEFT, RIGHT, NON}
 
@@ -73,12 +76,12 @@ func knockback(enemy_position: Vector2) -> void:
 	velocity = knockback_direction * knockback_force
 	
 func _on_eye_hit() -> void:
-	health -= 20
-	print("player ", health)
+	var amount = 10
+	GameManager.damage(amount)
 	
 func _on_poison_hit(poison_position) -> void:
-	health -= 20
-	print("player ", health)
+	var amount = 10
+	GameManager.damage(amount)
 	
 func _on_sword_enemy_hit() -> void:
 	count += 1
@@ -118,6 +121,8 @@ func initilizer() -> void:
 	GameManager.player_on_ice.connect(_on_game_manager_player_on_ice)
 	GameManager.player_not_on_ice.connect(_on_game_manager_player_not_on_ice)
 	GameManager.sword_swing.connect(_on_game_manager_sword_swing)
+	GameManager.health_regen.connect(_on_game_manager_health_regen)
+	GameManager.death_of_player.connect(_on_game_manager_death_of_player)
 			
 func _on_game_manager_player_on_stone() -> void:
 	if (not sfx_stone_ambiance.playing):
@@ -149,6 +154,13 @@ func _on_game_manager_player_not_on_ice() -> void:
 	sfx_ice.stop()
 	sfx_ice_ambiance.stop()
 	
+func _on_game_manager_health_regen() -> void:
+	if (GameManager.health < 100):
+		var lost_health = 100 - GameManager.health
+		GameManager.health += lost_health
+		print("health")
+		print(GameManager.health)
+	
 func audio_handler() -> void:
 	var is_moving : bool = velocity.length() > 0
 	if (is_moving):
@@ -164,6 +176,23 @@ func audio_handler() -> void:
 func _on_game_manager_sword_swing() -> void:
 	if (not sword_swing.playing):
 		sword_swing.play()
+		
+func death() -> void:
+	if (GameManager.health == 0):
+		queue_free()
+		get_tree().reload_current_scene()
+		
+func _on_game_manager_death_of_player() -> void:
+	death()
+
+	
+func poison_damage(_delta : float) -> void:
+	if poison_duration > 0:
+		poison_duration -= _delta
+		GameManager.damage(5 * _delta)
+		sprite.modulate = Color(0.7, 1.0, 0.7) 
+	else:
+		sprite.modulate = Color(1, 1, 1)
 	
 func animation_handler_player() -> void:
 	if player_direction != Vector2.ZERO:
@@ -184,6 +213,7 @@ func animation_handler_player() -> void:
 			if sprite.animation != "idle_right": sprite.animation = "idle_right"
 		elif default_direction == movement_direction.LEFT:
 			if sprite.animation != "idle_left": sprite.animation = "idle_left"
+
 			
 func _ready() -> void:
 	initilizer()
@@ -197,6 +227,7 @@ func _physics_process(delta: float) -> void:
 		if (knockback_timer <= 0):
 			in_knockback = false
 		return
+	poison_damage(delta)
 	attack_manager()
 	encode_direction()
 	velocity_calculator()

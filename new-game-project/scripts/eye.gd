@@ -3,7 +3,6 @@ extends CharacterBody2D
 class_name enemy_eye
 
 @export var movement_speed : float
-@export var player : PackedScene
 
 signal touched
 signal hit
@@ -50,9 +49,10 @@ var backoff_active : bool = false
 var got_hit : bool = false
 
 
-@onready var sprite: AnimatedSprite2D = %sprite
-@onready var detection: Sprite2D = %detection
-@onready var question: Sprite2D = %question
+@onready var sprite: AnimatedSprite2D = get_node_or_null("%sprite")
+@onready var detection: Sprite2D = get_node_or_null("%detection")
+@onready var question: Sprite2D = get_node_or_null("%question")
+@export var enemy_animation : SpriteFrames
 
 enum states {IDLE, WANDER, CHASE, FINDING, BACKOFF}
 enum idle_states {IDLING, WALKING}
@@ -103,7 +103,8 @@ func wandering(_delta : float) -> void:
 			do_next(_delta)
 
 			
-func movement_mechanics(dir : Vector2) -> void:
+@warning_ignore("shadowed_variable")
+func movement_mechanics(dir) -> void:
 	if (dir.x > 0.3826 and dir.y < -0.3826):
 		character_direction = (Vector2.UP + Vector2.RIGHT).normalized()
 	elif (dir.x < -0.3826 and dir.y > 0.3826):
@@ -194,6 +195,7 @@ func _on_enemy_detection_body_entered(body: Node2D) -> void:
 		state = states.CHASE
 		target = body
 	
+@warning_ignore("unused_parameter")
 func _on_enemy_detection_body_exited(body: Node2D) -> void:
 	target_found = false
 	state = states.FINDING
@@ -201,12 +203,15 @@ func _on_enemy_detection_body_exited(body: Node2D) -> void:
 	
 func _on_touching_detection_body_entered(body: Node2D) -> void:
 	if (body.name == "player"):
+		body._on_eye_touched(global_position)
+		body._on_eye_hit()
 		await HitStopManager.hit_stop()
 		emit_signal("touched", global_position)
 		emit_signal("hit")
+		
 
 func _on_player_hitting_enemy(got_player_direction) -> void:
-	health -= 100
+	health -= 15
 	got_direction = got_player_direction
 	enter_backoff()
 	print("enemy health ", health)
@@ -224,6 +229,7 @@ func enter_backoff() -> void:
 	backoff_active = true
 	state = states.BACKOFF
 	direction_enabler = -got_direction.normalized()
+	character_direction = direction_enabler
 	backoff_timer = get_tree().create_timer(20)
 	backoff_timer.timeout.connect(Callable(self, "_end_backoff"))
 	
@@ -244,25 +250,28 @@ func die() -> void:
 	self.queue_free()
 			
 func animation_handler() -> void:
-	if (velocity == Vector2.ZERO):
-		if (last_direction == Vector2.UP):
-			if (sprite.animation != "idle_up"): sprite.play("idle_up")
-		elif (last_direction == Vector2.DOWN):
-			if (sprite.animation != "idle_down"): sprite.play("idle_down")
-		elif (last_direction == Vector2.RIGHT):
-			if (sprite.animation != "idle_right"): sprite.play("idle_right")
-		elif (last_direction == Vector2.LEFT):
-			if (sprite.animation != "idle_left"): sprite.play("idle_left")
-	elif (velocity != Vector2.ZERO):
-		if (character_direction == Vector2.UP):
-			if (sprite.animation != "walk_up"): sprite.play("walk_up")
-		elif (character_direction == Vector2.DOWN):
-			if (sprite.animation != "walk_down"): sprite.play("walk_down")
-		elif (character_direction == Vector2.RIGHT):
-			if (sprite.animation != "walk_right"): sprite.play("walk_right")
-		elif (character_direction == Vector2.LEFT):
-			if (sprite.animation != "walk_left"): sprite.play("walk_left")
-			
+	if (sprite == null):
+		return
+	else:
+		if (velocity == Vector2.ZERO):
+			if (last_direction == Vector2.UP):
+				if (sprite.animation != "idle_up"): sprite.play("idle_up")
+			elif (last_direction == Vector2.DOWN):
+				if (sprite.animation != "idle_down"): sprite.play("idle_down")
+			elif (last_direction == Vector2.RIGHT):
+				if (sprite.animation != "idle_right"): sprite.play("idle_right")
+			elif (last_direction == Vector2.LEFT):
+				if (sprite.animation != "idle_left"): sprite.play("idle_left")
+		elif (velocity != Vector2.ZERO):
+			if (character_direction == Vector2.UP):
+				if (sprite.animation != "walk_up"): sprite.play("walk_up")
+			elif (character_direction == Vector2.DOWN):
+				if (sprite.animation != "walk_down"): sprite.play("walk_down")
+			elif (character_direction == Vector2.RIGHT):
+				if (sprite.animation != "walk_right"): sprite.play("walk_right")
+			elif (character_direction == Vector2.LEFT):
+				if (sprite.animation != "walk_left"): sprite.play("walk_left")
+@warning_ignore("shadowed_variable")
 func vector_to_cardinal(dir: Vector2) -> Vector2:
 	if (abs(dir.x) > abs(dir.y)):
 		return Vector2.RIGHT if dir.x > 0 else Vector2.LEFT
@@ -270,6 +279,13 @@ func vector_to_cardinal(dir: Vector2) -> Vector2:
 		return Vector2.DOWN if dir.y > 0 else Vector2.UP
 			
 func initializer() -> void:
+	if sprite == null:
+		sprite = get_node_or_null("%sprite")
+	if sprite != null:
+		if enemy_animation:
+			sprite.sprite_frames = enemy_animation
+	else:
+		push_error("ENEMY ERROR: " + self.name + " cannot find a child node with Unique Name '%sprite'!")
 	idle_state = idle_states.IDLING
 	detection.visible = false
 	question.visible = false

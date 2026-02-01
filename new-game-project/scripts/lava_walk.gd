@@ -14,4 +14,4 @@ func _on_body_exited(body: Node2D) -> void:
 		GameManager.emit_signal("player_not_on_lava")
 		
 func _process(delta: float) -> void:
-	pass
+	sprite_2d.visible = false
