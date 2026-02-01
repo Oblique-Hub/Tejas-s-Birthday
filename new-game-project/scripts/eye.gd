@@ -201,12 +201,15 @@ func _on_enemy_detection_body_exited(body: Node2D) -> void:
 	
 func _on_touching_detection_body_entered(body: Node2D) -> void:
 	if (body.name == "player"):
+		body._on_eye_touched(global_position)
+		body._on_eye_hit()
 		await HitStopManager.hit_stop()
 		emit_signal("touched", global_position)
 		emit_signal("hit")
+		
 
 func _on_player_hitting_enemy(got_player_direction) -> void:
-	health -= 100
+	health -= 15
 	got_direction = got_player_direction
 	enter_backoff()
 	print("enemy health ", health)
@@ -224,6 +227,7 @@ func enter_backoff() -> void:
 	backoff_active = true
 	state = states.BACKOFF
 	direction_enabler = -got_direction.normalized()
+	character_direction = direction_enabler
 	backoff_timer = get_tree().create_timer(20)
 	backoff_timer.timeout.connect(Callable(self, "_end_backoff"))
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://be8qbmt0fe144"]
+[gd_scene load_steps=50 format=3 uid="uid://be8qbmt0fe144"]
 
 [ext_resource type="Script" uid="uid://c3ubxpp10k6x6" path="res://scripts/player.gd" id="1_2147m"]
 [ext_resource type="Texture2D" uid="uid://scsbaf7gqh7f" path="res://sprites/background/shadow_2.png" id="2_54rde"]
@@ -13,6 +13,8 @@
 [ext_resource type="AudioStream" uid="uid://jrjpilyk2tua" path="res://audio/sword_swing.mp3" id="10_4c2uj"]
 [ext_resource type="AudioStream" uid="uid://c1l4ssu61w2ng" path="res://audio/ice_ambiance.mp3" id="12_68atb"]
 [ext_resource type="AudioStream" uid="uid://d2olv1in84jwc" path="res://audio/stone_ambiance_v3.mp3" id="13_2lybl"]
+[ext_resource type="Script" uid="uid://cd5p0yduvhhv0" path="res://scripts/health.gd" id="14_2iaiu"]
+[ext_resource type="Texture2D" uid="uid://d0nshru5nmxcl" path="res://sprites/misc/player_health.png" id="14_6uaar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_54rde"]
 atlas = ExtResource("2_h5uus")
@@ -203,6 +205,129 @@ size = Vector2(13, 15)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ksjmp"]
 size = Vector2(15, 18)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyf6x"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 150, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dywr"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 135, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_befyu"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 120, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j86q5"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 105, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_12a7l"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 90, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gv3ub"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 75, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nhbw"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 60, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnuka"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 45, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_udu15"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 30, 48, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_poxlt"]
+atlas = ExtResource("14_6uaar")
+region = Rect2(0, 15, 48, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tm615"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kyf6x")
+}],
+"loop": true,
+"name": &"0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dywr")
+}],
+"loop": true,
+"name": &"10",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_befyu")
+}],
+"loop": true,
+"name": &"20",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j86q5")
+}],
+"loop": true,
+"name": &"30",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12a7l")
+}],
+"loop": true,
+"name": &"40",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gv3ub")
+}],
+"loop": true,
+"name": &"50",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6nhbw")
+}],
+"loop": true,
+"name": &"60",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnuka")
+}],
+"loop": true,
+"name": &"70",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_udu15")
+}],
+"loop": true,
+"name": &"80",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_poxlt")
+}],
+"loop": true,
+"name": &"90",
+"speed": 5.0
+}]
+
 [node name="player" type="CharacterBody2D"]
 process_mode = 3
 script = ExtResource("1_2147m")
@@ -265,6 +390,14 @@ stream = ExtResource("12_68atb")
 
 [node name="sfx_stone_ambiance" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("13_2lybl")
+
+[node name="health" type="Area2D" parent="."]
+script = ExtResource("14_2iaiu")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="health"]
+position = Vector2(8, -37)
+sprite_frames = SubResource("SpriteFrames_tm615")
+animation = &"90"
 
 [connection signal="attack_entered" from="." to="sword_pivoit/sword" method="_on_player_attack_entered"]
 [connection signal="attack_exited" from="." to="sword_pivoit/sword" method="_on_player_attack_exited"]

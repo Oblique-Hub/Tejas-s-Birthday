@@ -1,14 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://craf3eix3ausx"]
+[gd_scene load_steps=5 format=3 uid="uid://craf3eix3ausx"]
 
 [ext_resource type="PackedScene" uid="uid://dw3w65ok3v27" path="res://scenes/objects/eye.tscn" id="1_lf15j"]
 [ext_resource type="Script" uid="uid://b8duwuv02wa6r" path="res://scripts/poison.gd" id="2_sbhuu"]
 [ext_resource type="Texture2D" uid="uid://b6bf311fnefyi" path="res://sprites/misc/poison.png" id="3_yy2c1"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yy2c1"]
+size = Vector2(19, 20)
+
 [node name="poison" instance=ExtResource("1_lf15j")]
 script = ExtResource("2_sbhuu")
-movement_speed = 130.0
-player = null
 
 [node name="poison" type="Sprite2D" parent="." index="5"]
 position = Vector2(1, -31)
 texture = ExtResource("3_yy2c1")
+
+[node name="poison_detection" type="Area2D" parent="." index="8"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="poison_detection" index="0"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_yy2c1")
+
+[connection signal="body_entered" from="poison_detection" to="." method="_on_poison_detection_body_entered"]
+[connection signal="body_exited" from="poison_detection" to="." method="_on_poison_detection_body_exited"]
