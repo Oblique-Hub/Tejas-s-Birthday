@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c20ehly03xr1s"]
+[gd_scene load_steps=10 format=3 uid="uid://c20ehly03xr1s"]
 
 [ext_resource type="Texture2D" uid="uid://b8kggibsnsvi6" path="res://sprites/misc/Sprite-0002.png" id="1_0ayuh"]
 [ext_resource type="Texture2D" uid="uid://dn3f6vj6u5oqm" path="res://sprites/tileset/TilesetField.png" id="1_avr7r"]
@@ -7,8 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bhemde8kefjm" path="res://scenes/objects/stone_walk.tscn" id="6_6yixf"]
 [ext_resource type="PackedScene" uid="uid://brje3uwjwygf3" path="res://scenes/objects/lava_walk.tscn" id="7_i3kgc"]
 [ext_resource type="PackedScene" uid="uid://mrg4rhknbmx6" path="res://scenes/objects/ice_walk.tscn" id="8_h302d"]
-[ext_resource type="PackedScene" uid="uid://craf3eix3ausx" path="res://scenes/objects/poison.tscn" id="9_maeww"]
-[ext_resource type="PackedScene" uid="uid://dw3w65ok3v27" path="res://scenes/objects/eye.tscn" id="10_73v48"]
+[ext_resource type="PackedScene" uid="uid://c7bouobiwg164" path="res://scenes/objects/magma.tscn" id="9_maeww"]
 [ext_resource type="PackedScene" uid="uid://d1sq2woawf6nc" path="res://scenes/objects/potion.tscn" id="10_fnj6f"]
 
 [node name="M1" type="Node2D"]
@@ -41,15 +40,13 @@ scale = Vector2(2.6512353, 19.335354)
 
 [node name="enemy" type="Node" parent="."]
 
-[node name="eye" parent="enemy" instance=ExtResource("10_73v48")]
-position = Vector2(278, 140)
-
-[node name="poison" parent="enemy" instance=ExtResource("9_maeww")]
-position = Vector2(-126, -92)
-
 [node name="potion" parent="." instance=ExtResource("10_fnj6f")]
 unique_name_in_owner = true
 position = Vector2(100, 437)
+
+[node name="eye" parent="." instance=ExtResource("9_maeww")]
+position = Vector2(-266, -105)
+movement_speed = 130.0
 
 [connection signal="health_regen" from="game_manager" to="player" method="_on_game_manager_health_regen"]
 [connection signal="player_not_on_ice" from="game_manager" to="player" method="_on_game_manager_player_not_on_ice"]
@@ -61,9 +58,3 @@ position = Vector2(100, 437)
 [connection signal="stop_poison_damage" from="game_manager" to="player" method="_on_game_manager_stop_poison_damage"]
 [connection signal="sword_swing" from="game_manager" to="player" method="_on_game_manager_sword_swing"]
 [connection signal="take_poison_damage" from="game_manager" to="player" method="_on_game_manager_take_poison_damage"]
-[connection signal="hitting_enemy" from="player" to="enemy/poison" method="_on_player_hitting_enemy"]
-[connection signal="not_hitting_enemy" from="player" to="enemy/poison" method="_on_player_not_hitting_enemy"]
-[connection signal="hit" from="enemy/eye" to="player" method="_on_eye_hit"]
-[connection signal="touched" from="enemy/eye" to="player" method="_on_eye_touched"]
-[connection signal="hit" from="enemy/poison" to="player" method="_on_poison_hit"]
-[connection signal="touched" from="enemy/poison" to="player" method="_on_poison_touched"]
