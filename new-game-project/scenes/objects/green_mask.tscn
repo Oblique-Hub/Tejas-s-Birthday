@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://di0le38yeay03"]
+
+[ext_resource type="Script" uid="uid://de1byh54nh654" path="res://scripts/green_mask.gd" id="1_2mqn4"]
+[ext_resource type="Texture2D" uid="uid://dtl55gtdgtk0k" path="res://sprites/misc/green_mask.png" id="1_ao4vg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ao4vg"]
+size = Vector2(42, 38)
+
+[node name="green_mask" type="Area2D"]
+script = ExtResource("1_2mqn4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ao4vg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ao4vg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

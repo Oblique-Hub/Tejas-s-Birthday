@@ -28,6 +28,11 @@ var finding_behaviour_array : Array = [0.05,0.15,0.25,0.5,0.75,1.0,1.25,1.5,1.75
 var finding_array : Array = [0.05,0.15,0.25,0.5,0.75,1.0,1.25,1.5,1.75,0.05,0.15]
 var finding_direction = [Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT]
 
+@onready var ray_down: RayCast2D = $ray_down
+@onready var ray_up: RayCast2D = $ray_up
+@onready var ray_right: RayCast2D = $ray_right
+@onready var ray_left: RayCast2D = $ray_left
+
 
 var univeral_timer : float = 0
 var finding_direction_change_timer : float = 0
@@ -47,6 +52,7 @@ var in_knockback : bool = true
 var backoff_done : bool = false
 var backoff_active : bool = false
 var got_hit : bool = false
+var is_dying : bool = false
 
 
 @onready var sprite: AnimatedSprite2D = get_node_or_null("%sprite")
@@ -211,12 +217,17 @@ func _on_touching_detection_body_entered(body: Node2D) -> void:
 		
 
 func _on_player_hitting_enemy(got_player_direction) -> void:
-	health -= 15
+	if (is_dying):
+		return
+	health -= 100
 	got_direction = got_player_direction
 	enter_backoff()
 	print("enemy health ", health)
 	print(got_direction)
 	if (health <= 0):
+		is_dying = true
+		var unique_id = get_tree().current_scene.scene_file_path + "/" + self.name
+		GameManager.mark_enemy_dead(unique_id)
 		die()
 		
 func _on_player_not_hitting_enemy() -> void:
@@ -230,7 +241,7 @@ func enter_backoff() -> void:
 	state = states.BACKOFF
 	direction_enabler = -got_direction.normalized()
 	character_direction = direction_enabler
-	backoff_timer = get_tree().create_timer(20)
+	backoff_timer = get_tree().create_timer(5)
 	backoff_timer.timeout.connect(Callable(self, "_end_backoff"))
 	
 func _end_backoff() -> void:
@@ -248,6 +259,16 @@ func velocity_match() -> void:
 	
 func die() -> void:
 	self.queue_free()
+	
+func collision_change() -> void:
+	if(character_direction == Vector2.RIGHT and ray_right.is_colliding()):
+		character_direction == Vector2.LEFT
+	elif(character_direction == Vector2.LEFT and ray_left.is_colliding()):
+		character_direction == Vector2.RIGHT
+	elif(character_direction == Vector2.UP and ray_up.is_colliding()):
+		character_direction == Vector2.DOWN
+	elif(character_direction == Vector2.DOWN and ray_down.is_colliding()):
+		character_direction == Vector2.UP
 			
 func animation_handler() -> void:
 	if (sprite == null):

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1uijo7ly583j"]
+
+[ext_resource type="Texture2D" uid="uid://cs380qmd60s41" path="res://sprites/misc/mask_ice.png" id="1_auvaa"]
+[ext_resource type="Script" uid="uid://88h51j1gyq4h" path="res://scripts/blue_mask.gd" id="1_yvj2u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yvj2u"]
+size = Vector2(40, 36)
+
+[node name="blue_mask" type="Area2D"]
+script = ExtResource("1_yvj2u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_auvaa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yvj2u")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -189,7 +189,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yy2c1"]
-size = Vector2(19, 20)
+size = Vector2(22, 24)
 
 [node name="poison" instance=ExtResource("1_lf15j")]
 script = ExtResource("2_sbhuu")
@@ -200,13 +200,16 @@ sprite_frames = SubResource("SpriteFrames_vl7hc")
 animation = &"walk_right"
 autoplay = ""
 
+[node name="collision_circle" parent="." index="1"]
+position = Vector2(-0.5, -8)
+
 [node name="shadow" type="Sprite2D" parent="." index="4"]
 position = Vector2(-1, -9)
 texture = ExtResource("4_t8svr")
 
 [node name="poison_detection" type="Area2D" parent="." index="7"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="poison_detection" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="poison_detection" index="0" groups=["enemies"]]
 position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_yy2c1")
 

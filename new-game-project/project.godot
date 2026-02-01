@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Tejas's Birthday game"
-run/main_scene="uid://c20ehly03xr1s"
+run/main_scene="uid://c553jhhox3nk5"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 HitStopManager="*res://scripts/hit_stop_manager.gd"
 GameManager="*res://scripts/game_manager.gd"
+
+[global_group]
+
+enemies=""
 
 [input]
 

@@ -201,7 +201,7 @@ animation = &"walk_down"
 autoplay = ""
 frame_progress = 0.9281865
 
-[node name="collision_circle" parent="." index="1"]
+[node name="collision_circle" parent="." index="1" groups=["enemies"]]
 position = Vector2(1.5, -3)
 
 [node name="detection" parent="." index="2"]

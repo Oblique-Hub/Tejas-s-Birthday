@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://be8qbmt0fe144"]
+[gd_scene load_steps=63 format=3 uid="uid://be8qbmt0fe144"]
 
 [ext_resource type="Script" uid="uid://c3ubxpp10k6x6" path="res://scripts/player.gd" id="1_2147m"]
 [ext_resource type="Texture2D" uid="uid://scsbaf7gqh7f" path="res://sprites/background/shadow_2.png" id="2_54rde"]
@@ -15,6 +15,11 @@
 [ext_resource type="AudioStream" uid="uid://d2olv1in84jwc" path="res://audio/stone_ambiance_v3.mp3" id="13_2lybl"]
 [ext_resource type="Script" uid="uid://cd5p0yduvhhv0" path="res://scripts/health.gd" id="14_2iaiu"]
 [ext_resource type="Texture2D" uid="uid://d0nshru5nmxcl" path="res://sprites/misc/player_health.png" id="14_6uaar"]
+[ext_resource type="Script" uid="uid://c18id5twbr4bb" path="res://scripts/canvas_layer.gd" id="16_37b34"]
+[ext_resource type="Texture2D" uid="uid://0g8mgb5tyhei" path="res://sprites/misc/mask.png" id="17_jfdn7"]
+[ext_resource type="Texture2D" uid="uid://cs380qmd60s41" path="res://sprites/misc/mask_ice.png" id="18_xeqme"]
+[ext_resource type="Texture2D" uid="uid://dtl55gtdgtk0k" path="res://sprites/misc/green_mask.png" id="19_x3mv4"]
+[ext_resource type="PackedScene" uid="uid://dm31a6kvi0gn1" path="res://scenes/objects/game_manager.tscn" id="20_jfdn7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ae4o8"]
 atlas = ExtResource("3_2iaiu")
@@ -465,6 +470,101 @@ position = Vector2(8, -37)
 sprite_frames = SubResource("SpriteFrames_tm615")
 animation = &"90"
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("16_37b34")
+
+[node name="without mask 1" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -58.0
+offset_right = -12.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="without mask 2" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -102.0
+offset_top = -58.0
+offset_right = -62.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="without mask 3" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -152.0
+offset_top = -58.0
+offset_right = -112.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="mask 1" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -58.0
+offset_right = -12.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="red_mask" type="Sprite2D" parent="CanvasLayer/mask 1"]
+position = Vector2(20, 19)
+texture = ExtResource("17_jfdn7")
+
+[node name="mask 2" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -102.0
+offset_top = -58.0
+offset_right = -62.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="blue_mask" type="Sprite2D" parent="CanvasLayer/mask 2"]
+position = Vector2(20, 20)
+texture = ExtResource("18_xeqme")
+
+[node name="mask 3" type="Panel" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -152.0
+offset_top = -58.0
+offset_right = -112.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="green_mask" type="Sprite2D" parent="CanvasLayer/mask 3"]
+position = Vector2(20, 20)
+texture = ExtResource("19_x3mv4")
+
+[node name="game_manager" parent="." instance=ExtResource("20_jfdn7")]
+
 [connection signal="attack_entered" from="." to="sword_pivoit/sword" method="_on_player_attack_entered"]
 [connection signal="attack_exited" from="." to="sword_pivoit/sword" method="_on_player_attack_exited"]
 [connection signal="hit_stop" from="." to="Camera2D" method="_on_player_hit_stop"]
@@ -473,3 +573,6 @@ animation = &"90"
 [connection signal="enemy_hit" from="sword_pivoit/sword" to="." method="_on_sword_enemy_hit"]
 [connection signal="not_enemy_hit" from="sword_pivoit/sword" to="." method="_on_sword_not_enemy_hit"]
 [connection signal="sword_direction" from="sword_pivoit/sword" to="." method="_on_sword_sword_direction"]
+[connection signal="blue_mask" from="game_manager" to="CanvasLayer" method="_on_game_manager_blue_mask"]
+[connection signal="green_mask" from="game_manager" to="CanvasLayer" method="_on_game_manager_green_mask"]
+[connection signal="red_mask" from="game_manager" to="CanvasLayer" method="_on_game_manager_red_mask"]

@@ -123,6 +123,8 @@ func initilizer() -> void:
 	GameManager.sword_swing.connect(_on_game_manager_sword_swing)
 	GameManager.health_regen.connect(_on_game_manager_health_regen)
 	GameManager.death_of_player.connect(_on_game_manager_death_of_player)
+	GameManager.ladder.connect(_on_game_manager_ladder)
+	GameManager.not_ladder.connect(_on_game_manager_not_ladder)
 			
 func _on_game_manager_player_on_stone() -> void:
 	if (not sfx_stone_ambiance.playing):
@@ -155,11 +157,8 @@ func _on_game_manager_player_not_on_ice() -> void:
 	sfx_ice_ambiance.stop()
 	
 func _on_game_manager_health_regen() -> void:
-	if (GameManager.health < 100):
-		var lost_health = 100 - GameManager.health
-		GameManager.health += lost_health
-		print("health")
-		print(GameManager.health)
+	GameManager.health = min(GameManager.health + 20, 100)
+	print("Healed! Current health: ", GameManager.health)
 	
 func audio_handler() -> void:
 	var is_moving : bool = velocity.length() > 0
@@ -184,6 +183,13 @@ func death() -> void:
 		
 func _on_game_manager_death_of_player() -> void:
 	death()
+	
+func _on_game_manager_ladder() -> void:
+	movement_speed = 65
+
+
+func _on_game_manager_not_ladder() -> void:
+	movement_speed = 130
 
 	
 func poison_damage(_delta : float) -> void:
@@ -193,6 +199,7 @@ func poison_damage(_delta : float) -> void:
 		sprite.modulate = Color(0.7, 1.0, 0.7) 
 	else:
 		sprite.modulate = Color(1, 1, 1)
+		
 	
 func animation_handler_player() -> void:
 	if player_direction != Vector2.ZERO:
@@ -216,7 +223,11 @@ func animation_handler_player() -> void:
 
 			
 func _ready() -> void:
+	velocity = Vector2.ZERO
+	player_direction = Vector2.ZERO
+	in_knockback = false
 	initilizer()
+	GameManager.reset_health()
 
 func _physics_process(delta: float) -> void:
 	if (Engine.time_scale == 0):
